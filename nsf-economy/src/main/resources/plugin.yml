@@ -1,0 +1,176 @@
+name: NSFEconomy
+version: ${project.version}
+main: io.github.nsfeconomy.NSFEconomy
+api-version: '1.21'
+description: Nether Star-backed Fractional Reserve Banking System
+author: NSF Development Team
+website: https://github.com/nsfeconomy
+
+depend:
+  - Vault
+
+softdepend:
+  - PlaceholderAPI
+  - GriefPrevention
+  - Towny
+  - WorldGuard
+
+commands:
+  bank:
+    description: Central Bank operations
+    usage: /bank <subcommand>
+    aliases: [cb, centralbank]
+  tax:
+    description: Tax management
+    usage: /tax <subcommand>
+  bounty:
+    description: Bounty system
+    usage: /bounty <subcommand>
+  trade:
+    description: Official trade system
+    usage: /trade <player> <price>
+  permit:
+    description: Permit management
+    usage: /permit <subcommand>
+  nsf:
+    description: Plugin administration
+    usage: /nsf <subcommand>
+
+permissions:
+  # Player Permissions
+  nsf.bank.deposit:
+    description: Deposit stars for F-notes
+    default: true
+  nsf.bank.withdraw:
+    description: Withdraw stars with F-notes
+    default: true
+  nsf.bank.exchange:
+    description: Exchange denominations
+    default: true
+  nsf.bank.balance:
+    description: Check balance
+    default: true
+  nsf.bank.queue:
+    description: Use withdrawal queue
+    default: true
+  nsf.tax.pay:
+    description: Pay taxes
+    default: true
+  nsf.tax.view:
+    description: View tax obligations
+    default: true
+  nsf.bounty.view:
+    description: View bounties
+    default: true
+  nsf.bounty.claim:
+    description: Claim bounties
+    default: true
+  nsf.bounty.submit:
+    description: Submit completed bounties
+    default: true
+  nsf.trade:
+    description: Use official trade system
+    default: true
+  nsf.permit.buy:
+    description: Purchase permits
+    default: true
+  nsf.permit.view:
+    description: View owned permits
+    default: true
+
+  # Admin Permissions
+  nsf.admin.bank.create:
+    description: Create bank locations
+    default: op
+  nsf.admin.bank.remove:
+    description: Remove bank locations
+    default: op
+  nsf.admin.bank.list:
+    description: List all bank locations
+    default: op
+  nsf.admin.bank.mint:
+    description: Mint new currency
+    default: op
+  nsf.admin.bank.destroy:
+    description: Destroy currency
+    default: op
+  nsf.admin.bank.reserve:
+    description: View reserve status
+    default: op
+  nsf.admin.bank.audit:
+    description: Full audit access
+    default: op
+  nsf.admin.bank.pay:
+    description: Direct payments to players
+    default: op
+  nsf.admin.bank.grant:
+    description: Grants to players
+    default: op
+  nsf.admin.bank.setreserve:
+    description: Set reserve ratio
+    default: op
+  nsf.admin.bank.buyout:
+    description: Enable/disable buyout
+    default: op
+  nsf.admin.tax.set:
+    description: Modify tax rates
+    default: op
+  nsf.admin.tax.forgive:
+    description: Forgive player taxes
+    default: op
+  nsf.admin.bounty.create:
+    description: Create bounties
+    default: op
+  nsf.admin.bounty.approve:
+    description: Approve completed bounties
+    default: op
+  nsf.admin.bounty.cancel:
+    description: Cancel bounties
+    default: op
+  nsf.admin.config:
+    description: Modify plugin config
+    default: op
+  nsf.admin.reload:
+    description: Reload plugin configuration
+    default: op
+
+  # Wildcard Permissions
+  nsf.admin.*:
+    description: All admin permissions
+    default: op
+    children:
+      nsf.admin.bank.create: true
+      nsf.admin.bank.remove: true
+      nsf.admin.bank.list: true
+      nsf.admin.bank.mint: true
+      nsf.admin.bank.destroy: true
+      nsf.admin.bank.reserve: true
+      nsf.admin.bank.audit: true
+      nsf.admin.bank.pay: true
+      nsf.admin.bank.grant: true
+      nsf.admin.bank.setreserve: true
+      nsf.admin.bank.buyout: true
+      nsf.admin.tax.set: true
+      nsf.admin.tax.forgive: true
+      nsf.admin.bounty.create: true
+      nsf.admin.bounty.approve: true
+      nsf.admin.bounty.cancel: true
+      nsf.admin.config: true
+      nsf.admin.reload: true
+  nsf.player.*:
+    description: All player permissions
+    default: true
+    children:
+      nsf.bank.deposit: true
+      nsf.bank.withdraw: true
+      nsf.bank.exchange: true
+      nsf.bank.balance: true
+      nsf.bank.queue: true
+      nsf.tax.pay: true
+      nsf.tax.view: true
+      nsf.bounty.view: true
+      nsf.bounty.claim: true
+      nsf.bounty.submit: true
+      nsf.trade: true
+      nsf.permit.buy: true
+      nsf.permit.view: true
