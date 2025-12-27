@@ -1,0 +1,231 @@
+# ═══════════════════════════════════════════════════════════════════════════
+#  NSF Economy Plugin Configuration
+#  Nether Star-backed Fractional Reserve Banking System
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Server name displayed on F-notes
+server_name: "My Server"
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Currency Settings
+# ─────────────────────────────────────────────────────────────────────────────
+currency:
+  # Currency symbol displayed to players
+  symbol: "F$"
+  # Available denominations (do not change after server launch)
+  denominations:
+    - 1
+    - 10
+    - 100
+  # Number of Nether Stars per F$1 (1 shulker box = 1,728 stars)
+  stars_per_dollar: 1728
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Central Bank Settings
+# ─────────────────────────────────────────────────────────────────────────────
+bank:
+  # Default radius (blocks) for bank location interaction
+  default_radius: 10
+  # Target fractional reserve ratio (0.0 - 1.0)
+  # E.g., 0.10 means bank aims to hold 10% of circulating value in reserves
+  reserve_ratio_target: 0.10
+  # Critical reserve ratio that triggers emergency mode
+  reserve_ratio_critical: 0.05
+  
+  # Withdrawal limits during low reserve periods
+  emergency_mode:
+    enabled: true
+    # Maximum F$ withdrawal per player per day during emergency
+    max_withdrawal_per_day: 10
+    # Emergency withdrawal fee (0.05 = 5%)
+    withdrawal_fee: 0.05
+  
+  # Rate limiting to prevent abuse
+  rate_limits:
+    # Seconds between withdrawal attempts
+    withdrawal_cooldown_seconds: 300
+    # Maximum transactions per player per hour
+    max_transactions_per_hour: 20
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Diamond Buyout (Initial Currency Distribution)
+# ─────────────────────────────────────────────────────────────────────────────
+buyout:
+  # Enable/disable the diamond buyout feature
+  enabled: false
+  # F$ received per diamond
+  rate: 0.01
+  # Buyout window start (ISO format)
+  start_date: "2025-02-01T00:00:00"
+  # Buyout window end (ISO format)
+  end_date: "2025-02-08T00:00:00"
+  # Minimum diamonds per transaction
+  min_diamonds: 1
+  # Maximum diamonds a single player can exchange
+  max_diamonds_per_player: 10000
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Taxation System
+# ─────────────────────────────────────────────────────────────────────────────
+tax:
+  # Enable/disable the taxation system
+  enabled: true
+  # Automatically deduct taxes from player inventory at deadlines
+  auto_collect: false
+  # Grace period after due date before penalties apply
+  grace_period_days: 7
+  # Late payment penalty rate (0.10 = 10%)
+  late_penalty_rate: 0.10
+  
+  # Land Tax (requires compatible land claim plugin)
+  land_tax:
+    enabled: true
+    # F$ per claimed block per day
+    rate_per_block: 0.0001
+    # Days between tax calculations
+    billing_period_days: 7
+  
+  # Sales Tax (on official /trade transactions)
+  sales_tax:
+    enabled: true
+    # Percentage of sale price (0.05 = 5%)
+    rate: 0.05
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Permit System
+# ─────────────────────────────────────────────────────────────────────────────
+permits:
+  mining:
+    enabled: false
+    cost: 2
+    duration_days: 7
+    description: "Access to designated mining worlds"
+  nether:
+    enabled: false
+    cost: 5
+    duration_days: 7
+    description: "Nether portal usage"
+  end:
+    enabled: false
+    cost: 10
+    duration_days: 7
+    description: "End dimension access"
+  vendor:
+    enabled: false
+    cost: 20
+    duration_days: 30
+    description: "Shop creation rights"
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Anti-Exploit & Security
+# ─────────────────────────────────────────────────────────────────────────────
+security:
+  # Alert admins when suspicious activity is detected
+  alert_admins_on_suspicious_activity: true
+  # Alert if a player's holdings increase by this multiplier suddenly
+  suspicious_threshold_multiplier: 10
+  # Invalidate and confiscate counterfeit notes
+  confiscate_counterfeits: true
+  # Log all transactions for audit purposes
+  log_all_transactions: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Database Configuration
+# ─────────────────────────────────────────────────────────────────────────────
+database:
+  # Database type: 'sqlite' or 'mysql'
+  type: sqlite
+  
+  # SQLite settings
+  sqlite:
+    file: "data.db"
+  
+  # MySQL settings
+  mysql:
+    host: "localhost"
+    port: 3306
+    database: "nsf_economy"
+    username: "minecraft"
+    password: "changeme"
+    # Connection pool settings
+    pool:
+      max_size: 10
+      min_idle: 2
+      connection_timeout: 30000
+      idle_timeout: 600000
+      max_lifetime: 1800000
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Messages (Customizable)
+# ─────────────────────────────────────────────────────────────────────────────
+messages:
+  prefix: "&6[Bank]&r "
+  
+  # Bank operations
+  deposit_success: "&aDeposited &f{stars}&a Nether Stars. Received &f{notes}&a."
+  withdraw_success: "&aWithdrew &f{stars}&a Nether Stars."
+  withdraw_insufficient_reserve: "&cThe bank cannot fulfill this withdrawal. Reserve shortage."
+  withdraw_insufficient_notes: "&cYou don't have enough valid F-notes for this withdrawal."
+  exchange_success: "&aExchanged &f{old_amount}x F${old_denom}&a for &f{new_amount}x F${new_denom}&a."
+  
+  # Validation
+  invalid_note: "&cThis banknote is invalid or counterfeit. It has been confiscated."
+  not_at_bank: "&cYou must be at a bank location to perform this action."
+  no_bank_exists: "&cNo bank locations have been created yet."
+  
+  # Tax messages
+  tax_reminder: "&eYou owe &f{amount}&e in taxes. Due: &f{date}"
+  tax_overdue: "&c&lYour taxes are overdue! Pay immediately to avoid penalties."
+  tax_paid: "&aPaid &f{amount}&a in taxes. Thank you!"
+  
+  # Bounty messages
+  bounty_claimed: "&aYou have claimed bounty #{id}: &f{description}"
+  bounty_submitted: "&aBounty #{id} submitted for review."
+  bounty_approved: "&aBounty #{id} approved! You received &f{reward}&a."
+  
+  # Queue messages
+  queue_joined: "&eYou've joined the withdrawal queue. Position: &f{position}"
+  queue_left: "&eYou've left the withdrawal queue."
+  queue_processed: "&aYour queued withdrawal has been processed!"
+  
+  # Admin messages
+  admin_mint_success: "&aMinted &f{amount}x F${denomination}&a notes."
+  admin_destroy_success: "&aDestroyed &f{amount}x F${denomination}&a notes."
+  admin_location_created: "&aBank location '&f{name}&a' created."
+  admin_location_removed: "&aBank location '&f{name}&a' removed."
+  
+  # Error messages
+  error_generic: "&cAn error occurred. Please try again."
+  error_no_permission: "&cYou don't have permission to do that."
+  error_invalid_amount: "&cPlease enter a valid amount."
+  error_insufficient_stars: "&cYou don't have enough Nether Stars."
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Integrations
+# ─────────────────────────────────────────────────────────────────────────────
+integrations:
+  # Register as Vault economy provider
+  vault:
+    enabled: true
+    # Priority when registering with Vault
+    priority: "High"
+  
+  # PlaceholderAPI support
+  placeholderapi:
+    enabled: true
+  
+  # Land claim plugin integration for land tax
+  land_claims:
+    # Supported: 'griefprevention', 'towny', 'worldguard', 'none'
+    provider: "none"
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Debug Settings
+# ─────────────────────────────────────────────────────────────────────────────
+debug:
+  # Enable verbose logging
+  enabled: false
+  # Log database queries
+  log_queries: false
+  # Log note validations
+  log_validations: false
